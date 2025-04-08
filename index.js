@@ -19,9 +19,31 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+// https://3000-freecodecam-boilerplate-t68jqawnx2u.ws-us118.gitpod.io/api/1451001600000
+
+app.get('/api', function (req,res){
+  let date = new Date()
+
+  res.send({unix: date.valueOf(), utc: date.toUTCString()})
+
+})
+app.get('/api/:date?', function (req, res) {
+  let d = req.params.date;
+  let date;
+
+  // Check if it's a number string (unix timestamp)
+  if (!isNaN(d)) {
+    date = new Date(parseInt(d));
+  } else {
+    date = new Date(d);
+  }
+
+  if (isNaN(date.getTime())) {
+    res.send({ error: "Invalid Date" });
+    return;
+  }
+
+  res.send({ unix: date.getTime(), utc: date.toUTCString() });
 });
 
 
